@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphic Service</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f5f7fb;
+  --text:#333;
+  --card:#fff;
+  --primary:#1f4037;
+  --secondary:#99f2c8;
+}
+body.dark{
+  --bg:#0f172a;
+  --text:#e5e7eb;
+  --card:#111827;
+  --primary:#22c55e;
+  --secondary:#064e3b;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins;scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);transition:.4s;}
+
+.navbar{
+  position:fixed;top:0;width:100%;background:var(--card);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:15px 20px;z-index:999;
+}
+.nav-links a{margin-left:12px;cursor:pointer;text-decoration:none;color:var(--text);}
+
+section{min-height:100vh;padding:100px 20px;display:none;position:relative;overflow:hidden;}
+section.active{display:flex;flex-direction:column;justify-content:center;align-items:center;}
+
+/* 🌟 ANIMATED BACKGROUND FOR SERVICES PAGE */
+#services{
+  background:linear-gradient(-45deg,#1f4037,#2ecc71,#16a085,#0f172a);
+  background-size:400% 400%;
+  animation:bgMove 10s ease infinite;
+  color:white;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+.hero{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff;
+  text-align:center;
+}
+.hero h1{font-size:45px;}
+
+.profile-wrapper{margin-bottom:20px;animation:float 3s ease-in-out infinite;}
+.profile-wrapper img{width:140px;height:140px;border-radius:50%;border:4px solid #fff;}
+@keyframes float{0%{transform:translateY(0);}50%{transform:translateY(-15px);}100%{transform:translateY(0);}}
+
+.card{background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);padding:20px;border-radius:12px;width:90%;margin:10px 0;}
+
+.netflix-wrapper{width:100%;overflow:hidden;}
+.netflix-title{margin-bottom:10px;font-size:22px;color:#fff;}
+.netflix-row{display:flex;overflow-x:auto;gap:15px;scroll-behavior:smooth;}
+.netflix-row::-webkit-scrollbar{display:none;}
+
+.netflix-card{
+  min-width:220px;height:160px;border-radius:12px;overflow:hidden;
+  position:relative;cursor:pointer;transition:.3s;flex-shrink:0;
+  box-shadow:0 10px 20px rgba(0,0,0,0.15);
+  background:#fff;
+  color:#000;
+}
+.netflix-card:hover{transform:scale(1.08);}
+.netflix-card img{width:100%;height:100%;object-fit:cover;}
+.netflix-card span{position:absolute;bottom:0;left:0;width:100%;padding:8px;background:rgba(0,0,0,.6);color:#fff;}
+
+.cart-btn{
+  position:fixed;right:20px;top:80px;
+  background:var(--primary);
+  color:#fff;
+  padding:10px 15px;
+  border-radius:50px;
+  cursor:pointer;
+  z-index:9999;
+}
+
+.cart-modal{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.7);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:10000;
+}
+.cart-box{
+  background:var(--card);
+  padding:20px;
+  width:320px;
+  border-radius:12px;
+}
+.cart-item{padding:8px;border-bottom:1px solid #ddd;}
+
+button{
+  margin-top:12px;
+  padding:10px 15px;
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.whatsapp-btn{background:#25D366;}
+/* PAYMENT PAGE BACKGROUND */
+#payment{
+  background:linear-gradient(-45deg,#0f172a,#1f4037,#2ecc71,#064e3b);
+  background-size:400% 400%;
+  animation:paymentBG 12s ease infinite;
+  color:white;
+}
+@keyframes paymentBG{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+.payment-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  width:100%;
+  margin-top:20px;
+}
+.payment-card{
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  transition:0.3s;
+}
+.payment-card:hover{
+  transform:translateY(-8px);
+}
+.payment-card img{
+  width:80px;
+  margin-bottom:10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+<h3>Graphic Service</h3>
+<div class="nav-links">
+<a onclick="show('home')">Home</a>
+<a onclick="show('services')">Services</a>
+<a onclick="show('payment')">Payment</a>
+</div>
+</div>
+
+<div class="cart-btn" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
+
+<section id="home" class="active hero">
+<div class="profile-wrapper">
+<img src="https://i.pravatar.cc/300">
+</div>
+<h1>Build Your Brand Like a Startup 🚀</h1>
+<button onclick="show('services')">View Services</button>
+</section>
+
+<!-- SERVICES WITH ANIMATED BACKGROUND -->
+<section id="services">
+<div class="card">
+<h2>🔥 Premium Services</h2>
+<div class="netflix-wrapper">
+<div class="netflix-title">Trending Services</div>
+<div class="netflix-row">
+
+<div class="netflix-card"><img src="https://picsum.photos/400/300?1"><span>Logo Design $10</span><button onclick="addToCart('Logo Design',10)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?2"><span>UI/UX Design $25</span><button onclick="addToCart('UI/UX Design',25)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?3"><span>Brand Identity $40</span><button onclick="addToCart('Brand Identity',40)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?4"><span>Marketing Ads $20</span><button onclick="addToCart('Marketing Ads',20)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?5"><span>Social Media $15</span><button onclick="addToCart('Social Media',15)">Add to Cart</button></div>
+
+<div class="netflix-card"><img src="https://picsum.photos/400/300?6"><span>Video Editing $35</span><button onclick="addToCart('Video Editing',35)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?7"><span>Instagram Growth $50</span><button onclick="addToCart('Instagram Growth',50)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?8"><span>Website Design $60</span><button onclick="addToCart('Website Design',60)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?9"><span>E-commerce Store $120</span><button onclick="addToCart('E-commerce Store',120)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?10"><span>Facebook Ads $45</span><button onclick="addToCart('Facebook Ads',45)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?11"><span>Flyer Design $12</span><button onclick="addToCart('Flyer Design',12)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?12"><span>Business Card $8</span><button onclick="addToCart('Business Card',8)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?13"><span>Branding Kit $80</span><button onclick="addToCart('Branding Kit',80)">Add to Cart</button></div>
+<div class="netflix-card"><img src="https://picsum.photos/400/300?14"><span>SaaS Dashboard $150</span><button onclick="addToCart('SaaS Dashboard',150)">Add to Cart</button></div>
+
+</div>
+</div>
+</section>
+
+<section id="payment">
+<div class="card">
+<h2>💳 Stripe-Style Payment System</h2>
+<p><b>JazzCash / EasyPaisa:</b> 03281816454</p>
+<p><b>Email:</b> zafaryasmeen74@gmail.com</p>
+
+<div style="margin-top:20px;">
+<label>Enter Amount ($)</label>
+<input id="payAmount" type="number" placeholder="Enter amount" style="width:100%;padding:12px;border-radius:8px;margin-top:8px;">
+
+<button onclick="generateQR()">Generate QR Code</button>
+<button onclick="downloadInvoice()">Download Invoice</button>
+</div>
+
+<div id="qrBox" style="margin-top:20px;text-align:center;"></div>
+
+<div class="payment-grid">
+
+<div class="payment-card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/JazzCash_Logo.png" alt="JazzCash" style="width:120px;">
+<h3>💰 JazzCash</h3>
+<p>Scan QR or send payment manually.</p>
+</div>
+
+<div class="payment-card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Easypaisa_logo.png" alt="EasyPaisa" style="width:120px;">
+<h3>💰 EasyPaisa</h3>
+<p>Fast digital payment solution.</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<script>
+function generateQR(){
+  let amount=document.getElementById('payAmount').value;
+  if(!amount){alert('Enter amount');return;}
+  let qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Pay%20${amount}%20to%2003281816454`;
+  document.getElementById('qrBox').innerHTML=`<h3>Scan to Pay</h3><img src="${qrUrl}">`;
+}
+
+function downloadInvoice(){
+  let amount=document.getElementById('payAmount').value;
+  if(!amount){alert('Enter amount');return;}
+  let win=window.open('');
+  win.document.write(`
+    <html><head><title>Invoice</title></head>
+    <body style='font-family:Arial;padding:20px;'>
+    <h2>Invoice - Graphic Service</h2>
+    <p>JazzCash/EasyPaisa: 03281816454</p>
+    <p>Email: zafaryasmeen74@gmail.com</p>
+    <h3>Amount: $${amount}</h3>
+    <p>Status: Pending Payment</p>
+    <hr>
+    <p>Thank you for your order 🚀</p>
+    </body></html>
+  `);
+  win.print();
+}
+</script>
+
+<div class="cart-modal" id="cartModal">
+  <div class="cart-box">
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <h4 id="total">Total: $0</h4>
+
+    <button onclick="checkout()">Checkout</button>
+    <button class="whatsapp-btn" onclick="sendWhatsAppOrder()">Order on WhatsApp</button>
+    <button onclick="closeCart()">Close</button>
+  </div>
+</div>
+
+<script>
+let cart=[];
+
+function show(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function addToCart(name,price){
+  cart.push({name,price});
+  document.getElementById('cartCount').innerText=cart.length;
+}
+
+function openCart(){
+  document.getElementById('cartModal').style.display='flex';
+  renderCart();
+}
+
+function closeCart(){
+  document.getElementById('cartModal').style.display='none';
+}
+
+function renderCart(){
+  let html='';let total=0;
+  cart.forEach(i=>{html+=`<div class='cart-item'>${i.name} - $${i.price}</div>`;total+=i.price;});
+  document.getElementById('cartItems').innerHTML=html;
+  document.getElementById('total').innerText='Total: $'+total;
+}
+
+function checkout(){ alert('Checkout Successful!'); }
+
+function sendWhatsAppOrder(){
+  let msg="Hello, I want to order:%0A";
+  let total=0;
+  cart.forEach(i=>{msg+=`- ${i.name} ($${i.price})%0A`;total+=i.price;});
+  msg+=`Total: $${total}`;
+  window.open("https://wa.me/923281816454?text="+msg,"_blank");
+}
+</script>
+
+</body>
+</html>
+
+
+
